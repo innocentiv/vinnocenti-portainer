@@ -1,0 +1,20 @@
+version: "3.6"
+
+services:
+  portainer:
+    image: portainer/portainer:latest
+    command: -H unix:///var/run/docker.sock --admin-password '$$2y$$05$$gTMw6hPEO9ZVz4pDEAiwhOz1h6HXtt1ZiCEctp5XkFBzduykw.0ji'
+    deploy:
+      labels:
+        - "traefik.portainer.port=9000"
+        - "traefik.docker.network=traefik_web"
+        - "traefik.frontend.rule=Host:portainer.vinnocenti.com"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - web
+
+networks:
+  web:
+    external:
+      name: traefik_web
